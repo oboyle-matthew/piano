@@ -2,12 +2,8 @@ function get_attribute(note, att) {
     return note.querySelector(att) === null ? null : note.querySelector(att).innerHTML;
 }
 
-function is_rest(note) {
-    return false;
-}
-
-function get_staff(note) {
-    return note.querySelector('staff').innerHTML;
+function is_chord(note) {
+    return note.querySelector('chord') !== null;
 }
 
 function get_note_object(note) {
@@ -24,12 +20,22 @@ function get_notes(xml) {
     const notes = xml.querySelectorAll("note");
     let left = [];
     let right = [];
+    let toAddLeft = [];
+    let toAddRight = [];
     notes.forEach(note => {
         const note_obj = get_note_object(note);
         if (get_attribute(note, 'staff') === '1') {
-            right.push(note_obj);
+            if (!is_chord(note) && toAddRight.length > 0) {
+                right.push(toAddRight);
+                toAddRight = [];
+            }
+            toAddRight.push(note_obj);
         } else {
-            left.push(note_obj);
+            if (!is_chord(note) && toAddLeft.length > 0) {
+                left.push(toAddLeft);
+                toAddLeft = [];
+            }
+            toAddLeft.push(note_obj);
         }
     })
     const beats = xml.querySelector("beats").innerHTML;
@@ -48,7 +54,6 @@ export default function getInfo(file) {
             const parser = new DOMParser();
             const xml = parser.parseFromString(readerData, 'text/xml');
             const notes = get_notes(xml);
-            console.log(notes);
 
             resolve(notes);
         };
