@@ -6,6 +6,7 @@ import { List, ListItem } from 'react-mdl';
 import './App.css'
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
+import getInfo from './parser/XMLParser';
 
 class App extends Component {
     constructor(){
@@ -47,26 +48,28 @@ class App extends Component {
     }
 
     handleSelectedFile = event => {
-        console.log(event.target.files[0]);
         this.setState({
             selectedFile: event.target.files[0],
             file_name: event.target.files[0].name.split(".xml")[0],
         })
     };
 
-    handleUpload = () => {
+    async handleUpload() {
+        const info = await getInfo(this.state.selectedFile);
+        console.log(info);
+        this.setState({
+            right: info.right,
+            left: info.left,
+            beats: info.beats,
+        });
+        this.resetScreen();
         const data = new FormData()
         data.append('file', this.state.selectedFile, this.state.selectedFile.name);
         axios
             .post('http://localhost:5000/post', data)
             .then(res => {
                 const data = res.data;
-                this.setState({
-                    left: data.left,
-                    right: data.right,
-                    beats: data.beats,
-                })
-                this.resetScreen();
+                console.log(data);
             })
     };
 
@@ -183,7 +186,7 @@ class App extends Component {
               </Menu>
               <div style={{display: 'flex', flexDirection: 'row'}} class="center">
                   <input type="file" name="" id="" onChange={this.handleSelectedFile} />
-                  <button onClick={this.handleUpload}>Upload</button>
+                  <button onClick={() => this.handleUpload()}>Upload</button>
               </div>
 
               <div id="page-wrap" >

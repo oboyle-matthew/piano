@@ -46,11 +46,12 @@ class Visualizer extends Component {
     }
 
     getMinScore(notes) {
-        return Math.min(...notes.map(note => this.getScore(note)));
+        //arr.filter(Boolean) removes "false-y" values Eg. NaN in this case
+        return Math.min(...notes.map(note => this.getScore(note)).filter(Boolean));
     }
 
     getMaxScore(notes) {
-        return Math.max(...notes.map(note => this.getScore(note)));
+        return Math.max(...notes.map(note => this.getScore(note)).filter(Boolean));
     }
 
     convertToVisual(note, top, left, width) {
@@ -88,13 +89,17 @@ class Visualizer extends Component {
         const rightMin = this.getMinScore(rightNotes);
         const leftMax = this.getMaxScore(leftNotes);
         const leftMin = this.getMinScore(leftNotes);
+        console.log(rightMax);
+        console.log(rightMin);
         return (
             <div style={{width: lineLength, overflowX: 'none', marginTop: 100}}>
                 <div id="capture" >
                     <div style={{position: 'relative'}}>
                         {rightNotes.map((note, i) => {
                             let top = (height * Math.floor(this.sumUpTo(rightNotes, i) / lineLength));
+                            console.log(top);
                             top += (1 - ((this.getScore(note) - rightMin) / (rightMax - rightMin))) * incrementMultiplier;
+                            console.log(top);
                             let left = widthRatio * (this.sumUpTo(rightNotes, i) % lineLength);
                             const width = note.duration * widthRatio;
                             // return (
