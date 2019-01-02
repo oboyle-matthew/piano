@@ -5,7 +5,6 @@ import { List, ListItem } from 'react-mdl';
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 import getInfo from '../parser/XMLParser';
-import testxml from '../Ode to joy.xml';
 
 class App extends Component {
     constructor(){
@@ -26,14 +25,20 @@ class App extends Component {
             file_name: '',
             linesInPdf: 3,
         };
-        this.resetScreen();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.resetScreen();
+        }
     }
 
     resetScreen() {
-        const { beats, beatLength } = this.state;
-        var bars = window.innerWidth < 800 ? 1 : 2;
-        var width = window.innerWidth / (beats * beatLength * bars);
-        var height = window.innerHeight / 2;
+        const { beats } = this.props;
+        const { beatLength } = this.state;
+        const bars = window.innerWidth < 800 ? 1 : 2;
+        const width = window.innerWidth / (beats * beatLength * bars);
+        const height = window.innerHeight / 2;
         this.setState({
             widthRatio: width,
             barsPerLine: bars,
@@ -45,24 +50,6 @@ class App extends Component {
 
         });
     }
-
-    handleSelectedFile = event => {
-        this.setState({
-            selectedFile: event.target.files[0],
-            file_name: event.target.files[0].name.split(".xml")[0],
-        })
-    };
-
-    async handleUpload() {
-        const info = await getInfo(this.state.selectedFile);
-        console.log(info);
-        this.setState({
-            right: info.right,
-            left: info.left,
-            beats: info.beats,
-        });
-        this.resetScreen();
-    };
 
     createSlider(label, value, min, max, step) {
         return (
@@ -77,16 +64,16 @@ class App extends Component {
     }
 
     takeScreenshot() {
-        var node = document.getElementById('capture');
-        var self = this;
+        const node = document.getElementById('capture');
+        const self = this;
         domtoimage.toPng(node)
             .then(src => {
                 var img = new Image();
                 img.src = src;
                 img.onload = function() {
-                    var width = img.width;
-                    var height = self.state.height * self.state.linesInPdf;
-                    var pdf = new jsPDF("l", "mm", "a4");
+                    const width = img.width;
+                    const height = self.state.height * self.state.linesInPdf;
+                    const pdf = new jsPDF("l", "mm", "a4");
                     for (var i = 0; i < img.height / height; i++) {
                         var canvas = document.createElement('canvas');
                         canvas.width = width;
@@ -100,7 +87,8 @@ class App extends Component {
                             pdf.addPage();
                         }
                     }
-                    pdf.save(self.state.file_name + '.pdf');
+                    console.log(self.props.file_name);
+                    pdf.save(self.props.file_name + '.pdf');
                 }
 
             })
@@ -112,7 +100,7 @@ class App extends Component {
 
     render() {
         const Menu = BurgerMenu['slide'];
-        var styles = {
+        const styles = {
             bmBurgerButton: {
                 position: 'absolute',
                 width: '36px',
@@ -146,8 +134,8 @@ class App extends Component {
                 background: 'rgba(0, 0, 0, 0.3)'
             }
         };
-
-        const {radius, height, widthRatio, barsPerLine, incrementMultiplier, handDiff, left, right, beats, file_name, beatLength} = this.state;
+        const { left, right, beats } = this.props;
+        const {radius, height, widthRatio, barsPerLine, incrementMultiplier, handDiff, file_name, beatLength} = this.state;
         const sliders = <div>
             <h1 style={{ width: '150%', marginLeft: '-30%', textAlign: 'center'}}>Customize notes:</h1>
             {this.createSlider("Size of Notes", 'radius', 5, 50, 1)}
@@ -163,7 +151,6 @@ class App extends Component {
 
         </div>;
         return (
-            <div>
                 <div id="outer-container" style={{height: '100%'}}>
                     <Menu
                         styles={styles}
@@ -175,11 +162,6 @@ class App extends Component {
                             {sliders}
                         </List>
                     </Menu>
-                    <div style={{display: 'flex', flexDirection: 'row'}} class="center">
-                        <input type="file" name="" id="" onChange={this.handleSelectedFile} />
-                        <button onClick={() => this.handleUpload()}>Upload</button>
-                    </div>
-
                     <div id="page-wrap" >
                         <Visualizer style={{zIndex: -1}} beats={beats} beatLength={beatLength}
                                     multiplier={barsPerLine} incrementMultiplier={incrementMultiplier}
@@ -193,7 +175,6 @@ class App extends Component {
 
                 </div>
 
-            </div>
         );
     }
 }

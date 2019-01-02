@@ -30,19 +30,17 @@ class App extends Component {
         })
     };
 
-    async getTest() {
-        const { selectedFile, file_name } = this.state;
-        var storageRef = firebase.storage().ref();
-        const ref = storageRef.child('test.xml');
-        storageRef.child(this.state.title).getDownloadURL().then(function(url) {
+    async viewFile(title) {
+        const self = this;
+        const storageRef = firebase.storage().ref();
+        storageRef.child(title).getDownloadURL().then(function(url) {
             axios.get(url).then(res => {
                 console.log(res.data);
                 const parser = new DOMParser();
                 const xml = parser.parseFromString(res.data, 'text/xml');
                 const notes = get_notes(xml);
-                console.log(notes);
-
-            })
+                self.props.loadFile(notes, title.split(".xml")[0]);
+            });
             console.log(url);
         }).catch(function(error) {
             console.log(error);
@@ -54,9 +52,9 @@ class App extends Component {
         const { selectedFile, file_name } = this.state;
         var storageRef = firebase.storage().ref();
         var ref = storageRef.child(file_name);
-        ref.put(selectedFile).then(function(snapshot) {
-            console.log('Uploaded a blob or file!');
-            console.log(snapshot);
+        ref.put(selectedFile).then(() => {
+            this.setState({title: file_name});
+            this.getTest(file_name);
         });
 
 
@@ -65,11 +63,18 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div style={{display: 'flex', flexDirection: 'row'}} >
-                    <input type="file" name="" id="" onChange={this.handleSelectedFile} />
-                    <input type="text" value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
-                    <button onClick={() => this.handleUpload()}>Upload</button>
-                    <button onClick={() => this.getTest()}>Test</button>
+                <div style={{marginLeft: "20%", display: 'flex', flexDirection: 'row'}}>
+                    <input style={{width: '20%'}} type="file" name="" id="" onChange={this.handleSelectedFile} />
+                    <div style={{width: '20%'}}>
+                        <button  onClick={() => this.handleUpload()}>Upload</button>
+                    </div>
+                    <div style={{width: '20%'}}>
+                        <input style={{marginLeft: '5%', width: '85%'}} type="text" value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
+                    </div>
+
+                    <div style={{width: '20%'}}>
+                        <button onClick={() => this.viewFile(this.state.title)}>View</button>
+                    </div>
                 </div>
                 <div id="linkbox">
 
