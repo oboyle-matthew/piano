@@ -71,8 +71,8 @@ class Visualizer extends Component {
             } else if (note.alter === '-1') {
                 text += 'b'
             }
-            return <div style={{position: 'absolute', width: width, height: radius*2, top: top, left: left }}>
-                <text style={{fontSize: radius*2}}>{text}</text>
+            return <div style={{position: 'absolute', width: width, height: radius*2, top: top, left: left, fontSize: radius*2 }}>
+                {text}
             </div>
         }
     }

@@ -16,7 +16,7 @@ function get_note_object(note) {
     }
 }
 
-function get_notes(xml) {
+export default function get_notes(xml) {
     const notes = xml.querySelectorAll("note");
     let left = [];
     let right = [];
@@ -42,8 +42,7 @@ function get_notes(xml) {
     return {left: left, right: right, beats: beats};
 }
 
-
-export default function getInfo(file) {
+function getInfo(file) {
     const reader = new FileReader();
 
     reader.readAsText(file);
