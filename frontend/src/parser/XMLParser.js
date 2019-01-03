@@ -18,6 +18,7 @@ function get_note_object(note) {
 
 export default function get_notes(xml) {
     const notes = xml.querySelectorAll("note");
+    console.log(notes);
     let left = [];
     let right = [];
     let toAddLeft = [];
@@ -39,7 +40,29 @@ export default function get_notes(xml) {
         }
     })
     const beats = xml.querySelector("beats").innerHTML;
-    return {left: left, right: right, beats: beats};
+    const firstMeasure = xml.querySelector("measure");
+    let firstMeasureDuration = 0;
+    firstMeasure.querySelectorAll('note').forEach(note => {
+        if (note.querySelector('staff').innerHTML === '1') {
+            console.log(note.innerHTML);
+            firstMeasureDuration += parseInt(note.querySelector('duration').innerHTML);
+        }
+    })
+    console.log(firstMeasureDuration);
+    const secondMeasure = xml.querySelectorAll("measure")[1];
+    let secondMeasureDuration = 0;
+    secondMeasure.querySelectorAll('note').forEach(note => {
+        if (note.querySelector('staff').innerHTML === '1') {
+            console.log(note.innerHTML);
+            secondMeasureDuration += parseInt(note.querySelector('duration').innerHTML);
+        }
+    });
+    const measureDiff = secondMeasureDuration - firstMeasureDuration;
+    if (measureDiff > 0) {
+        left.unshift([{note: null, octave: null, alter: null, duration: measureDiff, type: null }])
+        right.unshift([{note: null, octave: null, alter: null, duration: measureDiff, type: null }])
+    }
+    return {left: left, right: right, beats: beats, beatLength: secondMeasureDuration / beats};
 }
 
 function getInfo(file) {

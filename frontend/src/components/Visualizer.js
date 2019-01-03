@@ -71,7 +71,7 @@ class Visualizer extends Component {
             } else if (note.alter === '-1') {
                 text += 'b'
             }
-            return <div style={{position: 'absolute', width: width, height: radius*2, top: top, left: left, fontSize: radius*2 }}>
+            return <div style={{position: 'absolute', width: width, height: radius*2, top: top, left: left, fontSize: radius*2}}>
                 {text}
             </div>
         }
@@ -87,7 +87,7 @@ class Visualizer extends Component {
         console.log(beats);
 
         return (
-            <div style={{width: lineLength, overflowX: 'none', marginTop: 100}}>
+            <div style={{width: lineLength, overflowX: 'none', marginTop: 50}}>
                 <div id="capture" >
                     <div style={{position: 'relative'}}>
                         {rightNotes.map((noteArray, i) => {

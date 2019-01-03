@@ -54,7 +54,7 @@ class App extends Component {
         var ref = storageRef.child(file_name);
         ref.put(selectedFile).then(() => {
             this.setState({title: file_name});
-            this.getTest(file_name);
+            this.viewFile(file_name);
         });
 
 

@@ -34,20 +34,20 @@ class App extends Component {
     }
 
     resetScreen() {
-        const { beats } = this.props;
-        const { beatLength } = this.state;
+        const { beats, beatLength } = this.props;
         const bars = window.innerWidth < 800 ? 1 : 2;
         const width = window.innerWidth / (beats * beatLength * bars);
+        const radius = window.innerWidth / (beats * bars * 8);
         const height = window.innerHeight / 2;
         this.setState({
             widthRatio: width,
             barsPerLine: bars,
-            radius: width * 8,
+            radius: radius,
             height: height,
             incrementMultiplier: 100,
             handDiff: height * 0.35,
             linesInPdf: 3,
-
+            beatLength: beatLength,
         });
     }
 
@@ -151,7 +151,7 @@ class App extends Component {
 
         </div>;
         return (
-                <div id="outer-container" style={{height: '100%'}}>
+                <div id="outer-container" style={{height: '90%', position: 'absolute', top: 0, left: 0}}>
                     <Menu
                         styles={styles}
                         noOverlay id={'slide'}
