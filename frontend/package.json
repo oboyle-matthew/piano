@@ -11,6 +11,8 @@
     "firebase": "^5.7.2",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.5.3",
+    "midi-parser-js": "^3.1.4",
+    "node-zip": "^1.1.1",
     "pdfkit": "^0.8.3",
     "react": "^16.7.0",
     "react-burger-menu": "^2.5.4",
@@ -22,7 +24,8 @@
     "react-slider": "^0.11.2",
     "save-svg-as-png": "^1.4.6",
     "wkhtmltopdf": "^0.3.4",
-    "xml2json": "^0.11.2"
+    "xml2json": "^0.11.2",
+    "zip-js": "0.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

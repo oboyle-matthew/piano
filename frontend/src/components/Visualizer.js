@@ -84,7 +84,6 @@ class Visualizer extends Component {
         const rightMin = this.getMinScore(rightNotes);
         const leftMax = this.getMaxScore(leftNotes);
         const leftMin = this.getMinScore(leftNotes);
-        console.log(beats);
 
         return (
             <div style={{width: lineLength, overflowX: 'none', marginTop: 50}}>

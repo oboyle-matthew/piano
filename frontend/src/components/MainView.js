@@ -151,7 +151,7 @@ class App extends Component {
 
         </div>;
         return (
-                <div id="outer-container" style={{height: '90%', position: 'absolute', top: 0, left: 0}}>
+                <div id="outer-container" style={{height: '90%', position: 'absolute', top: 0, left: 0, zIndex: -2}}>
                     <Menu
                         styles={styles}
                         noOverlay id={'slide'}

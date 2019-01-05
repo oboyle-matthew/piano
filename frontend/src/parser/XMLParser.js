@@ -17,42 +17,43 @@ function get_note_object(note) {
 }
 
 export default function get_notes(xml) {
-    const notes = xml.querySelectorAll("note");
-    console.log(notes);
+    let notes = xml.querySelectorAll("note");
+    if (xml.querySelectorAll('score-part').length > 2) {
+        notes = xml.querySelectorAll('part')[0].querySelectorAll('note');
+    }
     let left = [];
     let right = [];
     let toAddLeft = [];
     let toAddRight = [];
     notes.forEach(note => {
         const note_obj = get_note_object(note);
-        if (get_attribute(note, 'staff') === '1') {
-            if (!is_chord(note) && toAddRight.length > 0) {
-                right.push(toAddRight);
-                toAddRight = [];
-            }
-            toAddRight.push(note_obj);
-        } else {
+        if (get_attribute(note, 'staff') === '2') {
             if (!is_chord(note) && toAddLeft.length > 0) {
-                left.push(toAddLeft);
+                left.push(toAddLeft.reverse());
                 toAddLeft = [];
             }
             toAddLeft.push(note_obj);
+        } else {
+            if (!is_chord(note) && toAddRight.length > 0) {
+                right.push(toAddRight.reverse());
+                toAddRight = [];
+            }
+            toAddRight.push(note_obj);
         }
     })
     const beats = xml.querySelector("beats").innerHTML;
     const firstMeasure = xml.querySelector("measure");
     let firstMeasureDuration = 0;
     firstMeasure.querySelectorAll('note').forEach(note => {
-        if (note.querySelector('staff').innerHTML === '1') {
+        if (!note.querySelector('chord') && (!note.querySelector('staff') || note.querySelector('staff').innerHTML === '1')) {
             console.log(note.innerHTML);
             firstMeasureDuration += parseInt(note.querySelector('duration').innerHTML);
         }
-    })
-    console.log(firstMeasureDuration);
+    });
     const secondMeasure = xml.querySelectorAll("measure")[1];
     let secondMeasureDuration = 0;
     secondMeasure.querySelectorAll('note').forEach(note => {
-        if (note.querySelector('staff').innerHTML === '1') {
+        if (!note.querySelector('chord') && (!note.querySelector('staff') || note.querySelector('staff').innerHTML === '1')) {
             console.log(note.innerHTML);
             secondMeasureDuration += parseInt(note.querySelector('duration').innerHTML);
         }

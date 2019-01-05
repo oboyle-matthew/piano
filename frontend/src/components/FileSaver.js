@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import get_notes from '../parser/XMLParser';
 import axios from 'axios';
+import JSZip from 'node-zip';
 
 var config = {
     apiKey: "AIzaSyCdwRJgEWCP60ZcRflV-VE_LMHarUC_ifs",
@@ -35,10 +36,11 @@ class App extends Component {
         const storageRef = firebase.storage().ref();
         storageRef.child(title).getDownloadURL().then(function(url) {
             axios.get(url).then(res => {
-                console.log(res.data);
                 const parser = new DOMParser();
+                console.log(res.data);
                 const xml = parser.parseFromString(res.data, 'text/xml');
                 const notes = get_notes(xml);
+                console.log(notes);
                 self.props.loadFile(notes, title.split(".xml")[0]);
             });
             console.log(url);
@@ -49,7 +51,7 @@ class App extends Component {
     }
 
     async handleUpload() {
-        const { selectedFile, file_name } = this.state;
+        let { selectedFile, file_name } = this.state;
         var storageRef = firebase.storage().ref();
         var ref = storageRef.child(file_name);
         ref.put(selectedFile).then(() => {
