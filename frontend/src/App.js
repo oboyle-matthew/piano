@@ -3,6 +3,7 @@ import './App.css'
 import MainView from './components/MainView';
 import FileSaver from './components/FileSaver';
 
+//Here's a comment from test branch
 class App extends Component {
     constructor() {
         super();

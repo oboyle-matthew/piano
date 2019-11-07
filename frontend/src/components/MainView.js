@@ -136,12 +136,13 @@ class App extends Component {
         };
         const { left, right, beats } = this.props;
         const {radius, height, widthRatio, barsPerLine, incrementMultiplier, handDiff, file_name, beatLength} = this.state;
+        console.log(widthRatio);
         const sliders = <div>
             <h1 style={{ width: '150%', marginLeft: '-30%', textAlign: 'center'}}>Customize notes:</h1>
             {this.createSlider("Size of Notes", 'radius', 5, 50, 1)}
             {this.createSlider("Gap between hands", 'handDiff', 20, 300, 1)}
             {this.createSlider("Line Height", 'height', 100, 1000, 1)}
-            {this.createSlider("Line Width", 'widthRatio', 0.3, 7, 0.1)}
+            {this.createSlider("Line Width", 'widthRatio', 50, 400, 1)}
             {this.createSlider("Bars per line", 'barsPerLine', 1, 5, 1)}
             {this.createSlider("Pitch Difference", 'incrementMultiplier', 0, 300, 1)}
             <button style={{marginLeft: '15%', marginTop: '10%', marginBottom: '25%'}} onClick={() => this.resetScreen()}>Reset sizes</button>
