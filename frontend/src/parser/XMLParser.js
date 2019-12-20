@@ -50,7 +50,7 @@ export default function get_notes(xml) {
             firstMeasureDuration += parseInt(note.querySelector('duration').innerHTML);
         }
     });
-    const secondMeasure = xml.querySelectorAll("measure")[1];
+    const secondMeasure = xml.querySelectorAll("measure")[xml.querySelectorAll("measure").length > 1 ? 1 : 0];
     let secondMeasureDuration = 0;
     secondMeasure.querySelectorAll('note').forEach(note => {
         if (!note.querySelector('chord') && (!note.querySelector('staff') || note.querySelector('staff').innerHTML === '1')) {

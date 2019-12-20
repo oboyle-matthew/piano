@@ -142,7 +142,7 @@ class App extends Component {
             {this.createSlider("Size of Notes", 'radius', 5, 50, 1)}
             {this.createSlider("Gap between hands", 'handDiff', 20, 300, 1)}
             {this.createSlider("Line Height", 'height', 100, 1000, 1)}
-            {this.createSlider("Line Width", 'widthRatio', 50, 400, 1)}
+            {this.createSlider("Line Width", 'widthRatio', 0, 10, 0.1)}
             {this.createSlider("Bars per line", 'barsPerLine', 1, 5, 1)}
             {this.createSlider("Pitch Difference", 'incrementMultiplier', 0, 300, 1)}
             <button style={{marginLeft: '15%', marginTop: '10%', marginBottom: '25%'}} onClick={() => this.resetScreen()}>Reset sizes</button>

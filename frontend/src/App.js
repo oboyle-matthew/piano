@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css'
 import MainView from './components/MainView';
 import FileSaver from './components/FileSaver';
+import FileLoader from './new_components/FileLoader';
 
 //Here's a comment from test branch
 class App extends Component {
@@ -14,11 +15,17 @@ class App extends Component {
             name: '',
             beatLength: 64,
         };
-        this.loadFile = this.loadFile.bind(this);
+        this.setNotes = this.setNotes.bind(this);
     }
 
-    loadFile(notes, name) {
-        console.log(name);
+    normalizeNotes(notes) {
+
+    }
+
+    setNotes(notes, name) {
+        console.log(notes.left);
+        console.log(notes.beats);
+        console.log(notes.beatLength);
         this.setState({left: notes.left, right: notes.right, beats: notes.beats, name: name, beatLength: notes.beatLength})
     }
     
@@ -26,7 +33,8 @@ class App extends Component {
     const { left, right, beats, beatLength, name } = this.state;
     return (
         <div>
-            <FileSaver loadFile={this.loadFile}/>
+            <FileLoader updateNotes={this.setNotes} />
+            {/*<FileSaver loadFile={this.loadFile}/>*/}
             <MainView file_name={name} left={left} right={right} beats={beats} beatLength={beatLength} />
         </div>
     );
