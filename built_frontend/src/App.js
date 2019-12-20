@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css'
 import MainView from './components/MainView';
-import FileSaver from './components/FileSaver';
 import FileLoader from './new_components/FileLoader';
 
 //Here's a comment from test branch
@@ -23,9 +22,6 @@ class App extends Component {
     }
 
     setNotes(notes, name) {
-        console.log(notes.left);
-        console.log(notes.beats);
-        console.log(notes.beatLength);
         this.setState({left: notes.left, right: notes.right, beats: notes.beats, name: name, beatLength: notes.beatLength})
     }
     
@@ -34,7 +30,6 @@ class App extends Component {
     return (
         <div>
             <FileLoader updateNotes={this.setNotes} />
-            {/*<FileSaver loadFile={this.loadFile}/>*/}
             <MainView file_name={name} left={left} right={right} beats={beats} beatLength={beatLength} />
         </div>
     );
