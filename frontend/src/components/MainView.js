@@ -112,8 +112,9 @@ class App extends Component {
                 background: '#373a47'
             },
             bmCrossButton: {
+                marginTop: '20px',
                 height: '24px',
-                width: '24px'
+                width: '24px',
             },
             bmCross: {
                 background: '#bdc3c7'

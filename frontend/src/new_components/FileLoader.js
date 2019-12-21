@@ -33,10 +33,10 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <div style={{marginLeft: "20%", display: 'flex', flexDirection: 'row'}}>
-                    <input style={{width: '20%'}} type="file" name="" id="" onChange={this.handleSelectedFile} />
-                    <div style={{width: '20%'}}>
+            <div style={{marginLeft: '40%'}}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <input style={{width: '30%'}} type="file" name="" id="" onChange={this.handleSelectedFile} />
+                    <div style={{width: '10%'}}>
                         <button  onClick={() => this.handleUpload()}>Upload</button>
                     </div>
                 </div>
